@@ -1,8 +1,14 @@
 const fs = require('fs')
 const db = require('../models')
 const Restaurant = db.Restaurant
+const User = db.User
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+const Handlebars = require('handlebars')
+
+Handlebars.registerHelper('equal', (item1, item2, options) => {
+  return (item1 === item2) ? options.fn(this) : options.inverse(this)
+})
 
 const adminController = {
   getRestaurants: (req, res) => {
@@ -117,6 +123,22 @@ const adminController = {
             res.redirect('/admin/restaurants')
           })
       })
+  },
+
+  getUsers: (req, res) => {
+    return User.findAll({ raw: true, nest: true })
+      .then(users => {
+        res.render('admin/users', { users })
+      })
+  },
+
+  putUsers: (req, res) => {
+    return User.findByPk(req.params.id)
+      .then(user => {
+        user.update({ isAdmin: user.isAdmin ? false : true })
+        req.flash('success_messages', 'user was successfully to update')
+      })
+      .then(user => res.redirect('/admin/users'))
   }
 }
 
