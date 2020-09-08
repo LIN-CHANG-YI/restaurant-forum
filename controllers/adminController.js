@@ -134,11 +134,11 @@ const adminController = {
 
   putUsers: (req, res) => {
     return User.findByPk(req.params.id)
+      .then((user) => user.update({ isAdmin: user.isAdmin ? false : true }))
       .then(user => {
-        user.update({ isAdmin: user.isAdmin ? false : true })
         req.flash('success_messages', 'user was successfully to update')
+        res.redirect('/admin/users')
       })
-      .then(user => res.redirect('/admin/users'))
   }
 }
 
