@@ -134,10 +134,17 @@ const adminController = {
 
   putUsers: (req, res) => {
     return User.findByPk(req.params.id)
-      .then((user) => user.update({ isAdmin: user.isAdmin ? false : true }))
-      .then(user => {
-        req.flash('success_messages', 'user was successfully to update')
-        res.redirect('/admin/users')
+      .then((user) => {
+        if (user.email === 'root@example.com') {
+          req.flash('error_messages', `root@example.com cannot be changed!`)
+          res.redirect('/admin/users')
+        } else {
+          user.update({ isAdmin: user.isAdmin ? false : true })
+            .then(user => {
+              req.flash('success_messages', 'user was successfully to update')
+              res.redirect('/admin/users')
+            })
+        }
       })
   }
 }

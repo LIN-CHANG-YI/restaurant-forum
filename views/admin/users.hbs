@@ -37,7 +37,7 @@
         <form action="/admin/users/{{this.id}}?_method=PUT" method="POST">
           <!-- Button trigger modal -->
           {{#equal this.email 'root@example.com'}}
-          <button type="button" class="btn btn-primary" disabled>
+          <button type="submit" class="btn btn-primary" disabled>
             set as {{#if ../this.isAdmin}}user{{else}}admin{{/if}}
           </button>
           {{else}}
