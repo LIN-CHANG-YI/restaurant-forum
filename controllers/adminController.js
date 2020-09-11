@@ -5,11 +5,6 @@ const User = db.User
 const Category = db.Category
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
-const Handlebars = require('handlebars')
-
-Handlebars.registerHelper('equal', (item1, item2, options) => {
-  return (item1 === item2) ? options.fn(this) : options.inverse(this)
-})
 
 const adminController = {
   getRestaurants: (req, res) => {
@@ -78,8 +73,6 @@ const adminController = {
       .then(categories => {
         return Restaurant.findByPk(req.params.id, { raw: true, nest: true })
           .then(restaurant => {
-            console.log(restaurant)
-            console.log(categories)
             return res.render('admin/create', { restaurant, categories })
           })
       })

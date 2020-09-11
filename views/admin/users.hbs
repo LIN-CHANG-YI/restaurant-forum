@@ -36,7 +36,7 @@
       <td>
         <form action="/admin/users/{{this.id}}?_method=PUT" method="POST">
           <!-- Button trigger modal -->
-          {{#equal this.email 'root@example.com'}}
+          {{#ifCond this.email 'root@example.com'}}
           <button type="submit" class="btn btn-primary" disabled>
             set as {{#if ../this.isAdmin}}user{{else}}admin{{/if}}
           </button>
@@ -68,7 +68,7 @@
               </div>
             </div>
           </div>
-          {{/equal}}
+          {{/ifCond}}
         </form>
       </td>
     </tr>
