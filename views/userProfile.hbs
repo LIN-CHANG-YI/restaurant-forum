@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="card-body d-flex p-0">
+    <div class="leftbar">
+      <img src="{{profileUser.image}}" style="width: 350px;">
+    </div>
+    <div class="rightbar ml-5 mt-2">
+      <h3 class="name">{{profileUser.name}}</h3>
+      <h4 class="email">{{profileUser.email}}</h4>
+      {{#ifCond profileUser.id user.id}}
+      <a href="/users/{{../profileUser.id}}/edit" class="btn btn-primary">Edit</a>
+      {{/ifCond}}
+    </div>
+  </div>
+</div>
