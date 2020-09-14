@@ -56,11 +56,12 @@ const userController = {
   },
 
   getUser: (req, res) => {
+    const userSelf = req.user.id === Number(req.params.id) ? true : false
     return User.findByPk(req.params.id)
       .then(user => {
         Comment.findAndCountAll({ raw: true, nest: true, where: { UserId: req.params.id }, include: Restaurant })
           .then(result => {
-            return res.render('userProfile', { profileUser: user.toJSON(), comment: result.rows, commentNum: result.count })
+            return res.render('userProfile', { profileUser: user.toJSON(), userSelf, comment: result.rows, commentNum: result.count })
           })
       })
   },

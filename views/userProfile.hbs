@@ -7,9 +7,9 @@
       <h3 class="name">{{profileUser.name}}</h3>
       <h4 class="email">{{profileUser.email}}</h4>
       <h4 class="commentNum">{{commentNum}} 已評論餐廳</h4>
-      {{#ifCond profileUser.id user.id}}
-      <a href="/users/{{../profileUser.id}}/edit" class="btn btn-primary">Edit</a>
-      {{/ifCond}}
+      {{#if userSelf}}
+      <a href="/users/{{profileUser.id}}/edit" class="btn btn-primary">Edit</a>
+      {{/if}}
     </div>
   </div>
 </div>
