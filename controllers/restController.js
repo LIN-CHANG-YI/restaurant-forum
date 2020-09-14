@@ -39,7 +39,7 @@ const restController = {
   },
 
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { include: [Category, { model: Comment, include: [User] }, { model: User, as: 'FavoritedUsers' }, { model: User, as: 'LikedUsers'}] })
+    return Restaurant.findByPk(req.params.id, { include: [Category, { model: Comment, include: [User] }, { model: User, as: 'FavoritedUsers' }, { model: User, as: 'LikedUsers' }] })
       .then(restaurant => {
         const isFavorited = restaurant.FavoritedUsers.map(user => user.id).includes(req.user.id)
         const isLiked = restaurant.LikedUsers.map(user => user.id).includes(req.user.id)
