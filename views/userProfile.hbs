@@ -21,7 +21,8 @@
   <div class="card-body">
     {{#each comment}}
     <div class="restaurant-image" style="display: inline;">
-      <img src="{{this.Restaurant.image}}" alt="" class="mx-1" style="width:100px; height:100px; object-fit:cover">
+      <a href="/restaurants/{{this.Restaurant.id}}"><img src="{{this.Restaurant.image}}" alt="" class="mx-1"
+          style="width:100px; height:100px; object-fit:cover"></a>
     </div>
     {{/each}}
   </div>
