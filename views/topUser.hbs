@@ -29,7 +29,9 @@
         class="btn btn-danger">取消追蹤</button></form>
     {{else}}
     <form action="/following/{{this.id}}" method="POST" style="display: contents;"><button type="submit"
-        class="btn btn-primary">追蹤</button></form>
+        class="btn btn-primary"
+        {{#ifCond this.id ../user.id}}disabled{{/ifCond}}>{{#ifCond this.id ../user.id}}Yourself{{else}}追蹤{{/ifCond}}</button>
+    </form>
     {{/if}}
     </p>
   </div>

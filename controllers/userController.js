@@ -155,10 +155,16 @@ const userController = {
   },
 
   addFollowing: (req, res) => {
-    return Followship.create({ followingId: req.params.userId, followerId: req.user.id })
-      .then(followship => {
-        return res.redirect('back')
-      })
+    if (req.user.id === Number(req.params.userId)) {
+      req.flash('error_messages', "You can't follow yourself")
+      return res.redirect('back')
+    } else {
+      return Followship.create({ followingId: req.params.userId, followerId: req.user.id })
+        .then(followship => {
+          return res.redirect('back')
+        })
+    }
+
   },
 
   removeFollowing: (req, res) => {
