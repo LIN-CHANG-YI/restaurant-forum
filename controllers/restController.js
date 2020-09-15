@@ -62,7 +62,7 @@ const restController = {
   },
 
   getDashboard: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { include: [Comment, Category] })
+    return Restaurant.findByPk(req.params.id, { include: [Comment, Category, { model: User, as: 'FavoritedUsers' }] })
       .then(restaurant => {
         res.render('dashboard', { restaurant: restaurant.toJSON() })
       })
