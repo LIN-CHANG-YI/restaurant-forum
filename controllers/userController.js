@@ -57,11 +57,28 @@ const userController = {
 
   getUser: (req, res) => {
     const userSelf = req.user.id === Number(req.params.id) ? true : false
-    return User.findByPk(req.params.id)
+    return User.findByPk(req.params.id, {
+      include: [
+        { model: Restaurant, as: 'FavoritedRestaurants' },
+        { model: User, as: 'Followings' },
+        { model: User, as: 'Followers' }
+      ]
+    })
       .then(user => {
         Comment.findAndCountAll({ raw: true, nest: true, where: { UserId: req.params.id }, include: Restaurant })
           .then(result => {
-            return res.render('userProfile', { profileUser: user.toJSON(), userSelf, comment: result.rows, commentNum: result.count })
+            // 不重複評論餐廳邏輯
+            const restaurantsIdArray = []
+            const restaurantsArray = []
+            result.rows.forEach(r => {
+              if (!restaurantsIdArray.includes(r.RestaurantId)) {
+                restaurantsIdArray.push(r.RestaurantId)
+                restaurantsArray.push(r)
+              }
+            })
+            //
+            const followship = req.user.Followings.map(following => following.id).includes(user.toJSON().id)
+            return res.render('userProfile', { profileUser: user.toJSON(), userSelf, followship, comment: restaurantsArray, commentNum: restaurantsIdArray })
           })
       })
   },
