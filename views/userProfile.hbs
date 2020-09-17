@@ -6,7 +6,7 @@
     <div class="rightbar ml-5 mt-2">
       <h3 class="name">{{profileUser.name}}</h3>
       <h4 class="email">{{profileUser.email}}</h4>
-      <h6 class="commentNum">{{commentNum.length}} 已評論餐廳</h6>
+      <h6 class="commentNum">{{comments.length}} 已評論餐廳</h6>
       <h6 class="favoriteNum">{{profileUser.FavoritedRestaurants.length}} 已收藏餐廳</h6>
       <h6 class="followings">{{profileUser.Followings.length}} followings(追蹤者)</h6>
       <h6 class="followers">{{profileUser.Followers.length}} followers(追蹤者)</h6>
@@ -61,10 +61,10 @@
   <div class="leftbar col-md-8 pr-0">
     <div class="card mt-3">
       <div class="card-header">
-        {{commentNum.length}} 已評論餐廳
+        {{comments.length}} 已評論餐廳
       </div>
       <div class="card-body" style="overflow: auto; height: 143px;">
-        {{#each comment}}
+        {{#each comments}}
         <div class="restaurant-image" style="display: inline;">
           <a href="/restaurants/{{this.Restaurant.id}}"><img src="{{this.Restaurant.image}}" alt="" class="mx-1 my-1"
               style="width:90px; height:90px; object-fit:cover"></a>

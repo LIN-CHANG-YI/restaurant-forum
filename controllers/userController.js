@@ -61,21 +61,25 @@ const userController = {
       include: [
         { model: Restaurant, as: 'FavoritedRestaurants' },
         { model: User, as: 'Followings' },
-        { model: User, as: 'Followers' },
-        { model: Comment, include: [Restaurant] }
+        { model: User, as: 'Followers' }
       ]
     })
       .then(user => {
-        const followship = req.user.Followings.map(following => following.id).includes(user.toJSON().id)
-        const restaurantsIdArray = []
-        const restaurantsArray = []
-        user.toJSON().Comments.forEach(r => {
-          if (!restaurantsIdArray.includes(r.RestaurantId)) {
-            restaurantsIdArray.push(r.RestaurantId)
-            restaurantsArray.push(r)
-          }
-        })
-        return res.render('userProfile', { profileUser: user.toJSON(), userSelf, followship, comment: restaurantsArray, commentNum: restaurantsIdArray })
+        Comment.findAll({ raw: true, nest: true, where: { UserId: req.params.id }, include: Restaurant, order: [['createdAt', 'DESC']] })
+          .then(comments => {
+            // 不重複評論餐廳邏輯
+            const ids = new Set()
+            commentsArray = []
+            comments.forEach(r => {
+              if (!ids.has(r.RestaurantId)) {
+                ids.add(r.RestaurantId)
+                commentsArray.push(r)
+              }
+            })
+            //
+            const followship = req.user.Followings.map(following => following.id).includes(user.toJSON().id)
+            return res.render('userProfile', { profileUser: user.toJSON(), userSelf, followship, comments: commentsArray })
+          })
       })
   },
 
