@@ -126,7 +126,7 @@ const userController = {
   },
 
   addFavorite: (req, res) => {
-    return Favorite.create({ UserId: req.user.id, RestaurantId: req.params.restaurantId })
+    return Favorite.findOrCreate({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
       .then(restaurant => {
         return res.redirect('back')
       })
@@ -135,7 +135,11 @@ const userController = {
   removeFavorite: (req, res) => {
     return Favorite.findOne({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
       .then(restaurant => {
-        restaurant.destroy()
+        if (!restaurant) {
+          req.flash('error_messages', '已移除收藏')
+          return res.redirect('back')
+        }
+        return restaurant.destroy()
           .then(restaurant => {
             res.redirect('back')
           })
@@ -143,7 +147,7 @@ const userController = {
   },
 
   addLike: (req, res) => {
-    return Like.create({ UserId: req.user.id, RestaurantId: req.params.restaurantId })
+    return Like.findOrCreate({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
       .then(restaurant => {
         return res.redirect('back')
       })
@@ -152,7 +156,11 @@ const userController = {
   removeLike: (req, res) => {
     return Like.findOne({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
       .then(restaurant => {
-        restaurant.destroy()
+        if (!restaurant) {
+          req.flash('error_messages', '已許消喜歡')
+          return res.redirect('back')
+        }
+        return restaurant.destroy()
           .then(restaurant => {
             res.redirect('back')
           })
