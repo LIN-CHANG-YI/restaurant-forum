@@ -5,6 +5,7 @@ const Comment = db.Comment
 const User = db.User
 const Favorite = db.Favorite
 const pageLimit = 10
+const sequelize = require('sequelize')
 
 const restController = {
   getRestaurants: (req, res) => {
@@ -35,7 +36,7 @@ const restController = {
       Category.findAll({ raw: true, nest: true })
         .then(categories => {
           return res.render('restaurants', { restaurants: data, categories, categoryId, page, totalPage, prev, next })
-        })
+        }).catch(error => res.sendStatus(404))
     })
   },
 
@@ -47,8 +48,8 @@ const restController = {
         restaurant.increment('viewsCount')
           .then(restaurant => {
             return res.render('restaurant', { restaurant: restaurant.toJSON(), isFavorited, isLiked })
-          })
-      })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   },
 
   getFeeds: (req, res) => {
@@ -57,15 +58,15 @@ const restController = {
         Comment.findAll({ raw: true, nest: true, limit: 10, include: [Restaurant, User], order: [['createdAt', 'DESC']] })
           .then(comments => {
             return res.render('feeds', { restaurants, comments })
-          })
-      })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   },
 
   getDashboard: (req, res) => {
     return Restaurant.findByPk(req.params.id, { include: [Comment, Category, { model: User, as: 'FavoritedUsers' }] })
       .then(restaurant => {
         res.render('dashboard', { restaurant: restaurant.toJSON() })
-      })
+      }).catch(error => res.sendStatus(404))
   },
 
   getTopRestaurant: (req, res) => {
@@ -79,7 +80,7 @@ const restController = {
         }))
         restaurants = restaurants.sort((a, b) => b.FavoriteCount - a.FavoriteCount).slice(0, 10)
         return res.render('topRestaurant', { restaurants })
-      })
+      }).catch(error => res.sendStatus(404))
   }
 }
 

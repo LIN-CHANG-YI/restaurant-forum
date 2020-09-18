@@ -9,11 +9,11 @@ const categoryController = {
           Category.findByPk(req.params.id, { raw: true, nest: true })
             .then(category => {
               res.render('admin/categories', { category, categories })
-            })
+            }).catch(error => res.sendStatus(404))
         } else {
           return res.render('admin/categories', { categories })
         }
-      })
+      }).catch(error => res.sendStatus(404))
   },
 
   postCategory: (req, res) => {
@@ -25,7 +25,7 @@ const categoryController = {
         name: req.body.name
       }).then((category) => {
         res.redirect('/admin/categories')
-      })
+      }).catch(error => res.sendStatus(404))
     }
   },
 
@@ -39,8 +39,8 @@ const categoryController = {
           category.update(req.body)
             .then(category => {
               res.redirect('/admin/categories')
-            })
-        })
+            }).catch(error => res.sendStatus(404))
+        }).catch(error => res.sendStatus(404))
     }
   },
 
@@ -50,8 +50,8 @@ const categoryController = {
         category.destroy()
           .then(category => {
             res.redirect('/admin/categories')
-          })
-      })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   }
 }
 

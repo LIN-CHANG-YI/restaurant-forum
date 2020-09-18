@@ -34,9 +34,9 @@ const userController = {
           }).then(user => {
             req.flash('success_messages', '成功註冊帳號！')
             return res.redirect('/signin')
-          })
+          }).catch(error => res.sendStatus(404))
         }
-      })
+      }).catch(error => res.sendStatus(404))
     }
   },
 
@@ -79,7 +79,7 @@ const userController = {
             //
             const followship = req.user.Followings.map(following => following.id).includes(user.toJSON().id)
             return res.render('userProfile', { profileUser: user.toJSON(), userSelf, followship, comments: commentsArray })
-          })
+          }).catch(error => res.sendStatus(404))
       })
   },
 
@@ -91,7 +91,7 @@ const userController = {
     return User.findByPk(req.params.id)
       .then(user => {
         return res.render('editProfile')
-      })
+      }).catch(error => res.sendStatus(404))
   },
 
   putUser: (req, res) => {
@@ -112,8 +112,8 @@ const userController = {
             }).then(user => {
               req.flash('success_messages', 'user was successfully update')
               res.redirect(`/users/${user.id}`)
-            })
-          })
+            }).catch(error => res.sendStatus(404))
+          }).catch(error => res.sendStatus(404))
       })
     } else {
       return User.findByPk(req.params.id)
@@ -124,8 +124,8 @@ const userController = {
           }).then(user => {
             req.flash('success_messages', 'user was successfully update')
             res.redirect(`/users/${user.id}`)
-          })
-        })
+          }).catch(error => res.sendStatus(404))
+        }).catch(error => res.sendStatus(404))
     }
   },
 
@@ -133,7 +133,7 @@ const userController = {
     return Favorite.findOrCreate({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
       .then(restaurant => {
         return res.redirect('back')
-      })
+      }).catch(error => res.sendStatus(404))
   },
 
   removeFavorite: (req, res) => {
@@ -146,15 +146,15 @@ const userController = {
         return restaurant.destroy()
           .then(restaurant => {
             res.redirect('back')
-          })
-      })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   },
 
   addLike: (req, res) => {
     return Like.findOrCreate({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
       .then(restaurant => {
         return res.redirect('back')
-      })
+      }).catch(error => res.sendStatus(404))
   },
 
   removeLike: (req, res) => {
@@ -167,8 +167,8 @@ const userController = {
         return restaurant.destroy()
           .then(restaurant => {
             res.redirect('back')
-          })
-      })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   },
 
   getTopUser: (req, res) => {
@@ -181,7 +181,7 @@ const userController = {
         }))
         users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
         return res.render('topUser', { users })
-      })
+      }).catch(error => res.sendStatus(404))
   },
 
   addFollowing: (req, res) => {
@@ -192,9 +192,8 @@ const userController = {
       return Followship.create({ followingId: req.params.userId, followerId: req.user.id })
         .then(followship => {
           return res.redirect('back')
-        })
+        }).catch(error => res.sendStatus(404))
     }
-
   },
 
   removeFollowing: (req, res) => {
@@ -203,8 +202,8 @@ const userController = {
         followship.destroy()
           .then(followship => {
             return res.redirect('back')
-          })
-      })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   }
 }
 

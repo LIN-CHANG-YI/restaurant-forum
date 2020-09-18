@@ -10,7 +10,7 @@ const commentController = {
     })
       .then(comment => {
         res.redirect(`/restaurants/${req.body.restaurantId}`)
-      })
+      }).catch(error => res.sendStatus(404))
   },
 
   deleteComment: (req, res) => {
@@ -19,8 +19,8 @@ const commentController = {
         comment.destroy()
           .then(comment => {
             res.redirect(`/restaurants/${comment.RestaurantId}`)
-          })
-      })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   }
 }
 

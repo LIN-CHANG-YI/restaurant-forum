@@ -11,15 +11,14 @@ const adminController = {
     return Restaurant.findAll({ raw: true, nest: true, include: [Category] })
       .then(restaurants => {
         return res.render('admin/restaurants', { restaurants })
-      })
+      }).catch(error => res.sendStatus(404))
   },
 
   createRestaurant: (req, res) => {
     Category.findAll({ raw: true, nest: true })
       .then(categories => {
         return res.render('admin/create', { categories })
-      })
-
+      }).catch(error => res.sendStatus(404))
   },
 
   postRestaurant: (req, res) => {
@@ -43,7 +42,7 @@ const adminController = {
         }).then((restaurant) => {
           req.flash('success_messages', 'restaurant was successfully created')
           return res.redirect('/admin/restaurants')
-        })
+        }).catch(error => res.sendStatus(404))
       })
     } else {
       return Restaurant.create({
@@ -57,7 +56,7 @@ const adminController = {
       }).then((restaurant) => {
         req.flash('success_messages', 'restaurant was successfully created')
         return res.redirect('/admin/restaurants')
-      })
+      }).catch(error => res.sendStatus(404))
     }
   },
 
@@ -65,7 +64,7 @@ const adminController = {
     return Restaurant.findByPk(req.params.id, { raw: true, nest: true, include: [Category] })
       .then(restaurant => {
         return res.render('admin/restaurant', { restaurant })
-      })
+      }).catch(error => res.sendStatus(404))
   },
 
   editRestaurant: (req, res) => {
@@ -74,8 +73,8 @@ const adminController = {
         return Restaurant.findByPk(req.params.id, { raw: true, nest: true })
           .then(restaurant => {
             return res.render('admin/create', { restaurant, categories })
-          })
-      })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   },
 
   putRestaurant: (req, res) => {
@@ -100,8 +99,8 @@ const adminController = {
             }).then((restaurant) => {
               req.flash('success_messages', 'restaurant was successfully to update')
               res.redirect('/admin/restaurants')
-            })
-          })
+            }).catch(error => res.sendStatus(404))
+          }).catch(error => res.sendStatus(404))
       })
     } else {
       return Restaurant.findByPk(req.params.id)
@@ -117,8 +116,8 @@ const adminController = {
           }).then((restaurant) => {
             req.flash('success_messages', 'restaurant was successfully to update')
             res.redirect('/admin/restaurants')
-          })
-        })
+          }).catch(error => res.sendStatus(404))
+        }).catch(error => res.sendStatus(404))
     }
   },
 
@@ -128,15 +127,15 @@ const adminController = {
         restaurant.destroy()
           .then((restaurant) => {
             res.redirect('/admin/restaurants')
-          })
-      })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   },
 
   getUsers: (req, res) => {
     return User.findAll({ raw: true, nest: true })
       .then(users => {
         res.render('admin/users', { users })
-      })
+      }).catch(error => res.sendStatus(404))
   },
 
   putUsers: (req, res) => {
@@ -150,9 +149,9 @@ const adminController = {
             .then(user => {
               req.flash('success_messages', 'user was successfully to update')
               res.redirect('/admin/users')
-            })
+            }).catch(error => res.sendStatus(404))
         }
-      })
+      }).catch(error => res.sendStatus(404))
   }
 }
 
