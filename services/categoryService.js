@@ -42,6 +42,16 @@ const categoryService = {
         }).catch(error => res.sendStatus(404))
     }
   },
+
+  deleteCategory: (req, res, callback) => {
+    return Category.findByPk(req.params.id)
+      .then(category => {
+        category.destroy()
+          .then(category => {
+            callback({ status: 'success', message: '' })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
+  }
 }
 
 module.exports = categoryService
