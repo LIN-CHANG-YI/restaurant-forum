@@ -16,6 +16,7 @@ app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs', helpers: requ
 app.set('view engine', 'hbs')
 app.use(methodOverride('_method'))
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
 app.use(passport.initialize())
 app.use(passport.session())
