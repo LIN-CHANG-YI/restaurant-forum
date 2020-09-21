@@ -4,13 +4,13 @@ const db = require('./models')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
-const passport = require('./config/passport.js')
 const methodOverride = require('method-override')
 const app = express()
 const port = process.env.PORT || 3000
 if (process.env.NODE_env !== 'production') {
   require('dotenv').config()
 }
+const passport = require('./config/passport.js')
 
 app.engine('hbs', exphbs({ defaultLayout: 'main', extname: '.hbs', helpers: require('./config/handlebars-helpers.js') }))
 app.set('view engine', 'hbs')
