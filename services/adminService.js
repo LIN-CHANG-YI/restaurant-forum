@@ -19,6 +19,16 @@ const adminService = {
         callback({ restaurant })
       }).catch(error => res.sendStatus(404))
   },
+
+  deleteRestaurant: (req, res, callback) => {
+    return Restaurant.findByPk(req.params.id)
+      .then((restaurant) => {
+        restaurant.destroy()
+          .then((restaurant) => {
+            callback({ status: 'success', message: '' })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
+  }
 }
 
 module.exports = adminService
