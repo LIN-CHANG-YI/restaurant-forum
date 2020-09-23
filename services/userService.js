@@ -79,6 +79,13 @@ const userController = {
           }).catch(error => res.sendStatus(404))
         }).catch(error => res.sendStatus(404))
     }
+  },
+
+  addFavorite: (req, res, callback) => {
+    return Favorite.findOrCreate({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
+      .then(restaurant => {
+        callback({ status: 'success', message: '' })
+      }).catch(error => res.sendStatus(404))
   }
 }
 

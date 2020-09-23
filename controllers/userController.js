@@ -84,10 +84,9 @@ const userController = {
   },
 
   addFavorite: (req, res) => {
-    return Favorite.findOrCreate({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
-      .then(restaurant => {
-        return res.redirect('back')
-      }).catch(error => res.sendStatus(404))
+    userService.addFavorite(req, res, (data) => {
+      return res.redirect('back')
+    })
   },
 
   removeFavorite: (req, res) => {
