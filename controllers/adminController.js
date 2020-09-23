@@ -63,10 +63,9 @@ const adminController = {
   },
 
   getUsers: (req, res) => {
-    return User.findAll({ raw: true, nest: true })
-      .then(users => {
-        res.render('admin/users', { users })
-      }).catch(error => res.sendStatus(404))
+    adminService.getUsers(req, res, (data) => {
+      return res.render('admin/users', data)
+    })
   },
 
   putUsers: (req, res) => {

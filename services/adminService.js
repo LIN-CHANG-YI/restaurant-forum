@@ -122,7 +122,14 @@ const adminService = {
             callback({ status: 'success', message: '' })
           }).catch(error => res.sendStatus(404))
       }).catch(error => res.sendStatus(404))
-  }
+  },
+
+  getUsers: (req, res, callback) => {
+    return User.findAll({ raw: true, nest: true })
+      .then(users => {
+        callback({ users })
+      }).catch(error => res.sendStatus(404))
+  },
 }
 
 module.exports = adminService
