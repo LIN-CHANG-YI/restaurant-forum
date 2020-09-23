@@ -63,6 +63,16 @@ const adminService = {
     }
   },
 
+  editRestaurant: (req, res, callback) => {
+    Category.findAll({ raw: true, nest: true })
+      .then(categories => {
+        return Restaurant.findByPk(req.params.id, { raw: true, nest: true })
+          .then(restaurant => {
+            callback({ restaurant, categories })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
+  },
+
   putRestaurant: (req, res, callback) => {
     if (!req.body.name) {
       callback({ status: 'error', message: "name didn't exist" })

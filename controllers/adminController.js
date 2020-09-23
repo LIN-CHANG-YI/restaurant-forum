@@ -38,13 +38,9 @@ const adminController = {
   },
 
   editRestaurant: (req, res) => {
-    Category.findAll({ raw: true, nest: true })
-      .then(categories => {
-        return Restaurant.findByPk(req.params.id, { raw: true, nest: true })
-          .then(restaurant => {
-            return res.render('admin/create', { restaurant, categories })
-          }).catch(error => res.sendStatus(404))
-      }).catch(error => res.sendStatus(404))
+    adminService.editRestaurant(req, res, (data) => {
+      return res.render('admin/create', data)
+    })
   },
 
   putRestaurant: (req, res) => {
