@@ -17,6 +17,12 @@ const restController = {
     restService.getFeeds(req, res, (data) => {
       return res.json(data)
     })
+  },
+
+  getDashboard: (req, res) => {
+    restService.getDashboard(req, res, (data) => {
+      return res.json(data)
+    })
   }
 }
 

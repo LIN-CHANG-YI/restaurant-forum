@@ -27,10 +27,9 @@ const restController = {
   },
 
   getDashboard: (req, res) => {
-    return Restaurant.findByPk(req.params.id, { include: [Comment, Category, { model: User, as: 'FavoritedUsers' }] })
-      .then(restaurant => {
-        res.render('dashboard', { restaurant: restaurant.toJSON() })
-      }).catch(error => res.sendStatus(404))
+    restService.getDashboard(req, res, (data) => {
+      return res.render('dashboard', data)
+    })
   },
 
   getTopRestaurant: (req, res) => {

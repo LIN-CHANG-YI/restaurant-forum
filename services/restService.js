@@ -59,6 +59,13 @@ const restController = {
             callback({ restaurants, comments })
           }).catch(error => res.sendStatus(404))
       }).catch(error => res.sendStatus(404))
+  },
+
+  getDashboard: (req, res, callback) => {
+    return Restaurant.findByPk(req.params.id, { include: [Comment, Category, { model: User, as: 'FavoritedUsers' }] })
+      .then(restaurant => {
+        callback({ restaurant: restaurant.toJSON() })
+      }).catch(error => res.sendStatus(404))
   }
 }
 
