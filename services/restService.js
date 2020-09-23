@@ -37,6 +37,18 @@ const restController = {
           callback({ restaurants: data, categories, categoryId, page, totalPage, prev, next })
         }).catch(error => res.sendStatus(404))
     })
+  },
+
+  getRestaurant: (req, res, callback) => {
+    return Restaurant.findByPk(req.params.id, { include: [Category, { model: Comment, include: [User] }, { model: User, as: 'FavoritedUsers' }, { model: User, as: 'LikedUsers' }] })
+      .then(restaurant => {
+        const isFavorited = restaurant.FavoritedUsers.map(user => user.id).includes(req.user.id)
+        const isLiked = restaurant.LikedUsers.map(user => user.id).includes(req.user.id)
+        restaurant.increment('viewsCount')
+          .then(restaurant => {
+            callback({ restaurant: restaurant.toJSON(), isFavorited, isLiked })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   }
 }
 
