@@ -130,6 +130,20 @@ const adminService = {
         callback({ users })
       }).catch(error => res.sendStatus(404))
   },
+
+  putUsers: (req, res, callback) => {
+    return User.findByPk(req.params.id)
+      .then((user) => {
+        if (user.email === 'root@example.com') {
+          callback({ status: 'error', message: 'root@example.com cannot be changed!' })
+        } else {
+          user.update({ isAdmin: user.isAdmin ? false : true })
+            .then(user => {
+              callback({ status: 'success', message: 'user was successfully to update' })
+            }).catch(error => res.sendStatus(404))
+        }
+      }).catch(error => res.sendStatus(404))
+  }
 }
 
 module.exports = adminService

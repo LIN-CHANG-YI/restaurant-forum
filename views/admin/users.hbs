@@ -43,15 +43,15 @@
           <!-- Button trigger modal -->
           {{#ifCond this.email 'root@example.com'}}
           <button type="submit" class="btn btn-primary" disabled>
-            set as {{#if ../this.isAdmin}}user{{else}}admin{{/if}}
+            set as {{#if this.isAdmin}}user{{else}}admin{{/if}}
           </button>
           {{else}}
           <button type="button" class="btn btn-primary" data-toggle="modal"
-            data-target="#exampleModalCenter{{../this.id}}">
-            set as {{#if ../this.isAdmin}}user{{else}}admin{{/if}}
+            data-target="#exampleModalCenter{{this.id}}">
+            set as {{#if this.isAdmin}}user{{else}}admin{{/if}}
           </button>
           <!-- Modal -->
-          <div class="modal fade" id="exampleModalCenter{{../this.id}}" tabindex="-1" role="dialog"
+          <div class="modal fade" id="exampleModalCenter{{this.id}}" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
