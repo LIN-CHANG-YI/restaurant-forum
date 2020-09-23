@@ -90,17 +90,13 @@ const userController = {
   },
 
   removeFavorite: (req, res) => {
-    return Favorite.findOne({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
-      .then(restaurant => {
-        if (!restaurant) {
-          req.flash('error_messages', '已移除收藏')
-          return res.redirect('back')
-        }
-        return restaurant.destroy()
-          .then(restaurant => {
-            res.redirect('back')
-          }).catch(error => res.sendStatus(404))
-      }).catch(error => res.sendStatus(404))
+    userService.removeFavorite(req, res, (data) => {
+      if (data.status === 'error') {
+        req.flash('error_messages', data.message)
+        return res.redirect('back')
+      }
+      return res.redirect('back')
+    })
   },
 
   addLike: (req, res) => {

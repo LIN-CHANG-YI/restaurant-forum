@@ -86,6 +86,19 @@ const userController = {
       .then(restaurant => {
         callback({ status: 'success', message: '' })
       }).catch(error => res.sendStatus(404))
+  },
+
+  removeFavorite: (req, res, callback) => {
+    return Favorite.findOne({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
+      .then(restaurant => {
+        if (!restaurant) {
+          callback({ status: 'error', message: '已移除收藏' })
+        }
+        return restaurant.destroy()
+          .then(restaurant => {
+            callback({ status: 'success', message: '' })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   }
 }
 
