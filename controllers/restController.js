@@ -21,13 +21,9 @@ const restController = {
   },
 
   getFeeds: (req, res) => {
-    return Restaurant.findAll({ raw: true, nest: true, limit: 10, include: [Category], order: [['createdAt', 'DESC']] })
-      .then(restaurants => {
-        Comment.findAll({ raw: true, nest: true, limit: 10, include: [Restaurant, User], order: [['createdAt', 'DESC']] })
-          .then(comments => {
-            return res.render('feeds', { restaurants, comments })
-          }).catch(error => res.sendStatus(404))
-      }).catch(error => res.sendStatus(404))
+    restService.getFeeds(req, res, (data) => {
+      return res.render('feeds', data)
+    })
   },
 
   getDashboard: (req, res) => {

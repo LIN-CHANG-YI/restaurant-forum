@@ -22,6 +22,7 @@ const commentController = require('../controllers/api/commentController.js')
 const restController = require('../controllers/api/restController.js')
 
 router.get('/restaurants', authenticated, restController.getRestaurants)
+router.get('/restaurants/feeds', authenticated, restController.getFeeds)
 router.get('/restaurants/:id', authenticated, restController.getRestaurant)
 
 router.post('/comments', authenticated, commentController.postComment)

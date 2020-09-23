@@ -49,6 +49,16 @@ const restController = {
             callback({ restaurant: restaurant.toJSON(), isFavorited, isLiked })
           }).catch(error => res.sendStatus(404))
       }).catch(error => res.sendStatus(404))
+  },
+
+  getFeeds: (req, res, callback) => {
+    return Restaurant.findAll({ raw: true, nest: true, limit: 10, include: [Category], order: [['createdAt', 'DESC']] })
+      .then(restaurants => {
+        Comment.findAll({ raw: true, nest: true, limit: 10, include: [Restaurant, User], order: [['createdAt', 'DESC']] })
+          .then(comments => {
+            callback({ restaurants, comments })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   }
 }
 
