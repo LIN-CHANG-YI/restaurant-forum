@@ -9,6 +9,7 @@ const Followship = db.Followship
 const fs = require('fs')
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+const userService = require('../services/userService.js')
 
 const userController = {
   signUpPage: (req, res) => {
@@ -56,31 +57,9 @@ const userController = {
   },
 
   getUser: (req, res) => {
-    const userSelf = req.user.id === Number(req.params.id) ? true : false
-    return User.findByPk(req.params.id, {
-      include: [
-        { model: Restaurant, as: 'FavoritedRestaurants' },
-        { model: User, as: 'Followings' },
-        { model: User, as: 'Followers' }
-      ]
+    userService.getUser(req, res, (data) => {
+      return res.render('userProfile', data)
     })
-      .then(user => {
-        Comment.findAll({ raw: true, nest: true, where: { UserId: req.params.id }, include: Restaurant, order: [['createdAt', 'DESC']] })
-          .then(comments => {
-            // 不重複評論餐廳邏輯
-            const ids = new Set()
-            commentsArray = []
-            comments.forEach(r => {
-              if (!ids.has(r.RestaurantId)) {
-                ids.add(r.RestaurantId)
-                commentsArray.push(r)
-              }
-            })
-            //
-            const followship = req.user.Followings.map(following => following.id).includes(user.toJSON().id)
-            return res.render('userProfile', { profileUser: user.toJSON(), userSelf, followship, comments: commentsArray })
-          }).catch(error => res.sendStatus(404))
-      })
   },
 
   editUser: (req, res) => {
