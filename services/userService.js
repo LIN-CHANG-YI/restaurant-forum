@@ -99,6 +99,13 @@ const userController = {
             callback({ status: 'success', message: '' })
           }).catch(error => res.sendStatus(404))
       }).catch(error => res.sendStatus(404))
+  },
+
+  addLike: (req, res, callback) => {
+    return Like.findOrCreate({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
+      .then(restaurant => {
+        callback({ status: 'success', message: '' })
+      }).catch(error => res.sendStatus(404))
   }
 }
 

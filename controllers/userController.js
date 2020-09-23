@@ -100,10 +100,9 @@ const userController = {
   },
 
   addLike: (req, res) => {
-    return Like.findOrCreate({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
-      .then(restaurant => {
-        return res.redirect('back')
-      }).catch(error => res.sendStatus(404))
+    userService.addLike(req, res, (data) => {
+      return res.redirect('back')
+    })
   },
 
   removeLike: (req, res) => {
