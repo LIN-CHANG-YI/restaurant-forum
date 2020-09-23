@@ -143,6 +143,19 @@ const userController = {
           callback({ status: 'success', message: '' })
         }).catch(error => res.sendStatus(404))
     }
+  },
+
+  removeFollowing: (req, res, callback) => {
+    return Followship.findOne({ where: { followingId: req.params.userId, followerId: req.user.id } })
+      .then(followship => {
+        if (!followship) {
+          callback({ status: 'error', message: '已許消追蹤' })
+        }
+        followship.destroy()
+          .then(followship => {
+            callback({ status: 'success', message: '' })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   }
 }
 

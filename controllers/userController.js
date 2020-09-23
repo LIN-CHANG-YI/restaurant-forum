@@ -132,13 +132,13 @@ const userController = {
   },
 
   removeFollowing: (req, res) => {
-    return Followship.findOne({ where: { followingId: req.params.userId, followerId: req.user.id } })
-      .then(followship => {
-        followship.destroy()
-          .then(followship => {
-            return res.redirect('back')
-          }).catch(error => res.sendStatus(404))
-      }).catch(error => res.sendStatus(404))
+    userService.removeFollowing(req, res, (data) => {
+      if (data.status === 'error') {
+        req.flash('error_messages', data.message)
+        return res.redirect('back')
+      }
+      return res.redirect('back')
+    })
   }
 }
 
