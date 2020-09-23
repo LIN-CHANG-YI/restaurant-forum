@@ -28,6 +28,7 @@ router.get('/restaurants/top', authenticated, restController.getTopRestaurant)
 router.get('/restaurants/:id', authenticated, restController.getRestaurant)
 router.get('/restaurants/:id/dashboard', authenticated, restController.getDashboard)
 
+router.get('/users/top', authenticated, userController.getTopUser)
 router.get('/users/:id', authenticated, userController.getUser)
 router.get('/users/:id/edit', authenticated, userController.editUser)
 router.put('/users/:id', authenticated, upload.single('image'), userController.putUser)
