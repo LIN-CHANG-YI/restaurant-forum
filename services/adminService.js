@@ -13,6 +13,13 @@ const adminService = {
       }).catch(error => res.sendStatus(404))
   },
 
+  createRestaurant: (req, res, callback) => {
+    Category.findAll({ raw: true, nest: true })
+      .then(categories => {
+        callback({ categories })
+      }).catch(error => res.sendStatus(404))
+  },
+
   getRestaurant: (req, res, callback) => {
     return Restaurant.findByPk(req.params.id, { raw: true, nest: true, include: [Category] })
       .then(restaurant => {
