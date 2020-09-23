@@ -106,6 +106,19 @@ const userController = {
       .then(restaurant => {
         callback({ status: 'success', message: '' })
       }).catch(error => res.sendStatus(404))
+  },
+
+  removeLike: (req, res, callback) => {
+    return Like.findOne({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
+      .then(restaurant => {
+        if (!restaurant) {
+          callback({ status: 'error', message: '已許消喜歡' })
+        }
+        return restaurant.destroy()
+          .then(restaurant => {
+            callback({ status: 'success', message: '' })
+          }).catch(error => res.sendStatus(404))
+      }).catch(error => res.sendStatus(404))
   }
 }
 

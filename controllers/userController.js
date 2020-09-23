@@ -106,17 +106,13 @@ const userController = {
   },
 
   removeLike: (req, res) => {
-    return Like.findOne({ where: { UserId: req.user.id, RestaurantId: req.params.restaurantId } })
-      .then(restaurant => {
-        if (!restaurant) {
-          req.flash('error_messages', '已許消喜歡')
-          return res.redirect('back')
-        }
-        return restaurant.destroy()
-          .then(restaurant => {
-            res.redirect('back')
-          }).catch(error => res.sendStatus(404))
-      }).catch(error => res.sendStatus(404))
+    userService.removeLike(req, res, (data) => {
+      if (data.status === 'error') {
+        req.flash('error_messages', data.message)
+        return res.redirect('back')
+      }
+      return res.redirect('back')
+    })
   },
 
   getTopUser: (req, res) => {
