@@ -9,7 +9,6 @@ const commentController = {
       RestaurantId: req.body.restaurantId
     })
       .then(comment => {
-        console.log(comment)
         callback({ status: 'success', message: '', RestaurantId: req.body.restaurantId })
       }).catch(error => res.sendStatus(404))
   },
