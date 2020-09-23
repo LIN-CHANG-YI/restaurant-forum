@@ -63,14 +63,13 @@ const userController = {
   },
 
   editUser: (req, res) => {
-    if (req.user.id !== Number(req.params.id)) {
-      req.flash('error_messages', 'Permission denied')
-      return res.redirect('back')
-    }
-    return User.findByPk(req.params.id)
-      .then(user => {
-        return res.render('editProfile')
-      }).catch(error => res.sendStatus(404))
+    userService.editUser(req, res, (data) => {
+      if (data.status === 'error') {
+        req.flash('error_messages', data.message)
+        return res.redirect('back')
+      }
+      return res.render('editProfile')
+    })
   },
 
   putUser: (req, res) => {

@@ -37,6 +37,16 @@ const userController = {
             callback({ profileUser: user.toJSON(), userSelf, followship, comments: commentsArray })
           }).catch(error => res.sendStatus(404))
       })
+  },
+
+  editUser: (req, res, callback) => {
+    if (req.user.id !== Number(req.params.id)) {
+      callback({ status: 'error', message: 'Permission denied' })
+    }
+    return User.findByPk(req.params.id)
+      .then(user => {
+        callback({ status: 'success', message: '' })
+      }).catch(error => res.sendStatus(404))
   }
 }
 
