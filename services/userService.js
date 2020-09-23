@@ -132,6 +132,17 @@ const userController = {
         users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
         callback({ users })
       }).catch(error => res.sendStatus(404))
+  },
+
+  addFollowing: (req, res, callback) => {
+    if (req.user.id === Number(req.params.userId)) {
+      callback({ status: 'error', message: "You can't follow yourself" })
+    } else {
+      return Followship.create({ followingId: req.params.userId, followerId: req.user.id })
+        .then(followship => {
+          callback({ status: 'success', message: '' })
+        }).catch(error => res.sendStatus(404))
+    }
   }
 }
 
