@@ -66,6 +66,20 @@ const restController = {
       .then(restaurant => {
         callback({ restaurant: restaurant.toJSON() })
       }).catch(error => res.sendStatus(404))
+  },
+
+  getTopRestaurant: (req, res, callback) => {
+    Restaurant.findAll({ include: [{ model: User, as: 'FavoritedUsers' }] })
+      .then(restaurants => {
+        restaurants = restaurants.map(r => ({
+          ...r.dataValues,
+          description: r.dataValues.description.substring(0, 50),
+          FavoriteCount: r.FavoritedUsers.length,
+          isFavorited: req.user.FavoritedRestaurants.map(restaurant => restaurant.id).includes(r.id)
+        }))
+        restaurants = restaurants.sort((a, b) => b.FavoriteCount - a.FavoriteCount).slice(0, 10)
+        callback({ restaurants })
+      }).catch(error => res.sendStatus(404))
   }
 }
 
